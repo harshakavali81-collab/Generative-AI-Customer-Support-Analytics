@@ -23,7 +23,10 @@ def check(page):
     page.locator(".source-card").first.wait_for(state="attached")
     assert page.locator(".source-card").count() == 6, "Expected six fictional policies"
 
-    page.get_by_role("button", name="How many days do refunds take?").click()
+    # The suggestion sidebar is intentionally hidden on narrow screens.
+    # Use the always-visible chat composer on both desktop and mobile.
+    page.locator("#question").fill("How many days do refunds take?")
+    page.locator("#chat-form button").click()
     assert page.locator(".msg.assistant").count() == 2
     reply = page.locator(".msg.assistant").last
     assert "[source:" in reply.inner_text(), "Refund FAQ lacks a source"
