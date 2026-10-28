@@ -11,7 +11,28 @@ const escape=s=>{const t=document.createElement('div');t.textContent=s;return t.
 let corpus=[];
 function rebuild(){let df={};corpus=docs.map(d=>{const terms=tokenize(d.text+' '+d.title);const counts={};for(const w of terms)counts[w]=(counts[w]||0)+1;for(const w of Object.keys(counts))df[w]=(df[w]||0)+1;return {doc:d,counts}});const idf={};Object.keys(df).forEach(w=>idf[w]=1+Math.log((corpus.length+1)/(df[w]+1)));for(const c of corpus){const v={};let mag=0;for(const [w,n] of Object.entries(c.counts)){v[w]=(1+Math.log(n))*idf[w];mag+=v[w]*v[w]}mag=Math.sqrt(mag)||1;c.vector=Object.fromEntries(Object.entries(v).map(([k,val])=>[k,val/mag]))}corpus.idf=idf;}
 function retrieve(q){const counts={};tokenize(q).forEach(w=>counts[w]=(counts[w]||0)+1);const v={};let mag=0;for(const [w,n] of Object.entries(counts)){if(!corpus.idf[w])continue;v[w]=(1+Math.log(n))*corpus.idf[w];mag+=v[w]*v[w]}mag=Math.sqrt(mag)||1;const ranked=corpus.map(c=>({doc:c.doc,score:Object.entries(v).reduce((sum,[w,n])=>sum+n/mag*(c.vector[w]||0),0)})).filter(r=>r.score>=.09).sort((a,b)=>b.score-a.score);return ranked.slice(0,3)}
-function grounded(q,hits){const qwords=new Set(tokenize(q));for(const h of hits){const sentences=h.doc.text.split(/(?<=[.!?])\s+/);const choices=sentences.map(s=>({s,hit:tokenize(s).filter(w=>qwords.has(w)).length})).filter(x=>x.hit>=2).sort((a,b)=>b.hit-a.hit);if(choices.length)return {answer:choices[0].s+' [source:'+h.doc.source+']',citation:h.doc,score:h.score}}return null;}
+function grounded(q,hits){
+ const words=new Set(tokenize(q));
+ const topical=new Set('refund return tracking delivery shipping password login account invoice billing warranty repair replacement privacy delete payment charge dispatch security order'.split(' '));
+ const requested=[...words].filter(w=>topical.has(w));
+ for(const h of hits){
+  const evidence=new Set(tokenize(h.doc.text));
+  const overlaps=[...words].filter(w=>evidence.has(w)).length;
+  const floor=requested.length&&overlaps>=2&&h.score>=.09?1:2;
+  const sentences=h.doc.text.split(/(?<=[.!?])\s+/);
+  const ranked=sentences.map(s=>{
+   const terms=new Set(tokenize(s));
+   return {s,hit:[...words].filter(w=>terms.has(w)).length,
+    topical:[...requested].filter(w=>terms.has(w)).length};
+  }).filter(x=>x.hit>=floor&&x.s.length>35)
+    .sort((a,b)=>b.topical-a.topical||b.hit-a.hit||a.s.length-b.s.length);
+  if(ranked.length){
+   const excerpts=ranked.slice(0,2).map(x=>x.s).join(' ');
+   return {answer:excerpts+' [source:'+h.doc.source+']',citation:h.doc,score:h.score};
+  }
+ }
+ return null;
+}
 function addMessage(role,text,citation){const m=document.createElement('div');m.className='msg '+role;const icon=document.createElement('span');icon.className='avatar';icon.textContent=role==='user'?'Y':'✦';const container=document.createElement('div'),small=document.createElement('small'),p=document.createElement('p');small.textContent=role==='user'?'YOU':'SUPPORTLENS AI';p.textContent=text;container.append(small,p);if(citation){const details=document.createElement('details');details.className='evidence';const summ=document.createElement('summary');summ.textContent='◫ '+citation.source+' — inspect policy evidence';const quote=document.createElement('blockquote');quote.textContent=citation.text;details.append(summ,quote);container.append(details)}m.append(icon,container);$('messages').append(m);$('messages').scrollTop=$('messages').scrollHeight}
 function ask(q){q=q.trim();if(!q||q.length>900)return;addMessage('user',q);const start=performance.now();const suspicious=/ignore (all |any )?(previous|prior|system) instructions|reveal (the )?(system|developer) prompt|override (your )?rules/i.test(q);const hits=suspicious?[]:retrieve(q);const result=suspicious?null:grounded(q,hits);const latency=Math.max(0,Math.round(performance.now()-start));const answer=result?result.answer:"I couldn't verify that in the available support documentation. Please contact a human support agent.";addMessage('assistant',answer,result?result.citation:null);session.push({topic:topic(q),answered:!!result,latency});refreshMetrics()}
 function bar(label,count,max){const outer=document.createElement('div');outer.className='bar';const top=document.createElement('div');top.className='bar-top';const l=document.createElement('span'),v=document.createElement('span');l.textContent=label;v.textContent=count;top.append(l,v);const track=document.createElement('div');track.className='bar-track';const fill=document.createElement('span');fill.style.width=(count/Math.max(1,max)*100)+'%';track.append(fill);outer.append(top,track);return outer}
