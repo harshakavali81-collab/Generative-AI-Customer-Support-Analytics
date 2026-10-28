@@ -1,0 +1,59 @@
+name: Verify portfolio-hosted SupportLens demo
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/check-live-demo.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check-public-site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Check GitHub Pages HTML, JavaScript, CSS, policies and case study
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import time
+          from urllib.error import HTTPError, URLError
+          from urllib.request import Request, urlopen
+
+          origin = "https://harshakavali81-collab.github.io/harshavardhan-portfolio/"
+          targets = [
+              ("supportlens-demo/", "SupportLens", "text/html"),
+              ("supportlens-demo/app.js", "function grounded", "javascript"),
+              ("supportlens-demo/styles.css", "body", "text/css"),
+              ("supportlens-demo/policies.json", "refund", "json"),
+              ("cases/supportlens.html", "SupportLens", "text/html"),
+          ]
+          for name, marker, expected_type in targets:
+              url = origin + name
+              last_error = None
+              for attempt in range(4):
+                  try:
+                      request = Request(url, headers={"User-Agent": "SupportLens-Release-Probe/1.0"})
+                      with urlopen(request, timeout=15) as response:
+                          body = response.read(2_000_000).decode("utf-8")
+                          typ = response.headers.get("Content-Type", "").lower()
+                          status = response.status
+                      assert status == 200, f"HTTP {status}"
+                      assert marker.lower() in body.lower(), "missing expected resource marker"
+                      assert expected_type in typ, f"unexpected Content-Type {typ}"
+                      if name.endswith("policies.json"):
+                          data = json.loads(body)
+                          assert len(data) == 6, "six example policies expected"
+                      print(f"PUBLIC OK: {url} status=200 bytes={len(body)} type={typ}")
+                      last_error = None
+                      break
+                  except (HTTPError, URLError, TimeoutError, AssertionError, ValueError) as err:
+                      last_error = err
+                      print(f"Attempt {attempt+1}/4 unavailable: {url} ({err})")
+                      if attempt != 3:
+                          time.sleep(8)
+              if last_error is not None:
+                  raise SystemExit(f"Public demo verification failed: {name}: {last_error}")
+          print("PASS: GitHub Pages publicly serves the demo and linked case study.")
+          PY
