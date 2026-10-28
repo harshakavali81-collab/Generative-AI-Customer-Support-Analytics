@@ -47,3 +47,9 @@ For a Docker run, configure secrets as environment variables before launching. D
 - Offline evaluation on approved real questions, answer-quality human sign-off, prompt injection red-teaming, threat model validation and disaster recovery drills.
 
 No actual cloud service credentials, real customer integration or production approval are included in this repository.
+
+## Full-stack smoke test in continuous integration
+
+The quality pipeline builds and starts both container images in Docker Compose, waits for service health checks, requests the React index page through Nginx, checks the FastAPI health/index status through the reverse proxy, and submits a source-cited chat question. The verification runs against **fictional** local policies and a temporary SQLite volume; the volume is deleted after the test. See `.github/workflows/ci.yml`.
+
+These checks confirm the containers work together in a short-lived GitHub Actions test environment. They do not constitute cloud deployment, scale/load testing, end-user authentication, disaster recovery, or external availability.

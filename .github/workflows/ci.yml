@@ -59,3 +59,22 @@ jobs:
           path: browser-test-output/
           if-no-files-found: warn
           retention-days: 14
+  docker-stack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and start FastAPI + React + Nginx
+        run: docker compose up --build -d --wait --wait-timeout 180
+      - name: Verify real reverse proxy and cited API response
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --max-time 15 http://127.0.0.1:8080/ | grep -qi "SupportLens"
+          curl --fail --silent --show-error --max-time 15 http://127.0.0.1:8080/api/health | python3 -c "import json,sys; x=json.load(sys.stdin); assert x['status']=='ok' and x['indexed_chunks']>0"
+          curl --fail --silent --show-error --max-time 15             -H 'Content-Type: application/json'             -d '{"question":"How do I reset my password?"}'             http://127.0.0.1:8080/api/chat             | python3 -c "import json,sys; x=json.load(sys.stdin); assert x['answered'] and x['citations'] and '[source:' in x['answer']"
+      - name: Docker logs on failure
+        if: failure()
+        run: docker compose logs --tail 90
+      - name: Remove test containers and demo data volume
+        if: always()
+        run: docker compose down -v --remove-orphans
