@@ -24,6 +24,25 @@ python -m http.server 8090 -d site
 
 Browser-only counters reset when the page reloads; the real Python application persists topic-level SQLite metrics. See [architecture](docs/ARCHITECTURE.md).
 
+## Security, feedback and operations (v1.1)
+
+The FastAPI application includes optional one-time **anonymous helpful / unhelpful ratings**, average response-time and answer-rate metrics, a protected **aggregate topic CSV** export, and configurable retention (30 days by default). It does **not** store raw prompts, replies or client IPs in SQLite. Rejected questions containing obvious personal-email, PIN/OTP or payment-card patterns do not enter the event table, but these simple patterns are not a complete PII scanner.
+
+Local-development mode supports testing without tokens. If `ENVIRONMENT=production` is set, chat access requires `CHAT_API_TOKEN` and admin analytics requires `ADMIN_TOKEN`; routes fail closed when secrets are missing. These are educational operator gates, **not** multi-user authentication, and should not be treated as a real public security solution. A single-process per-IP rate limiter is available for the demo; an external ingress limiter is needed at scale.
+
+Important API additions: `POST /api/feedback`, `GET /api/export/topics.csv`, and `POST /api/admin/retention-cleanup`. See [API reference](docs/API_REFERENCE.md), [threat model](docs/THREAT_MODEL.md), [data dictionary](docs/DATA_DICTIONARY.md) and [operations guide](docs/RUNBOOK.md).
+
+**Public browser demo placement:** The same static `site/` showcase has been mirrored into the separate [portfolio repository's `supportlens-demo/` directory](https://github.com/harshakavali81-collab/harshavardhan-portfolio/tree/main/supportlens-demo). Its expected GitHub Pages path is [Portfolio browser demo](https://harshakavali81-collab.github.io/harshavardhan-portfolio/supportlens-demo/), pending independently verified publication. The separate repository's GitHub Pages activation returned a permission error; the [manual deploy workflow](.github/workflows/pages.yml) should only be dispatched after configuring repository Pages in Settings.
+
+### Engineering and handoff guides
+
+- [Deployment checklist and GitHub Pages troubleshooting](docs/DEPLOYMENT.md)
+- [Operator runbook](docs/RUNBOOK.md)
+- [Complete API reference](docs/API_REFERENCE.md)
+- [Privacy-minimal data dictionary](docs/DATA_DICTIONARY.md)
+- [Threat model and security boundaries](docs/THREAT_MODEL.md)
+- [Smoke test](scripts/smoke_test.py) and [offline-only microbenchmark](scripts/benchmark.py)
+
 ## Features
 
 - Six trusted, fictional Markdown support policy documents with checksums and deterministic chunk IDs.
