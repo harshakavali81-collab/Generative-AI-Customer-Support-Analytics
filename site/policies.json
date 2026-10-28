@@ -1,0 +1,32 @@
+[
+  {
+    "source": "returns.md",
+    "title": "Returns & refunds",
+    "text": "Customers can request a return within 30 days of delivery. Items must be unused and in original packaging. To start a return, open Account, Orders and Request return. Once a return is received and approved, refunds are sent to the original payment method within 5 to 7 business days. Shipping fees are not refundable unless the item arrived damaged or the merchant made an error. Final sale items cannot be returned unless required by applicable law."
+  },
+  {
+    "source": "shipping.md",
+    "title": "Shipping and tracking",
+    "text": "Standard shipping usually takes 3 to 6 business days after dispatch. Express shipping usually takes 1 to 2 business days after dispatch. The order confirmation email includes an order reference. Once dispatched, the tracking link is available on the Orders page. If tracking has not updated for 48 hours after dispatch, contact demo support with the order reference. Regional carrier disruptions can cause delays."
+  },
+  {
+    "source": "accounts.md",
+    "title": "Account & sign-in",
+    "text": "If you forget your password, open Sign in and choose Forgot password, then follow the password-reset email link. Password-reset links expire after 30 minutes. Never share passwords or one-time codes with support. Two-factor authentication is available in Account, Security. For account deletion, contact the privacy team using account settings. A verified request is processed within 30 days subject to legal retention."
+  },
+  {
+    "source": "billing.md",
+    "title": "Billing & invoices",
+    "text": "Accepted payment methods are Visa, Mastercard and eligible debit cards in supported markets. Receipts are emailed after payment. Download an invoice from Account, Orders, Invoice. If charged twice, check whether one charge is a pending authorization hold. For confirmed duplicate charges, contact billing support with the order reference and never share full card details."
+  },
+  {
+    "source": "warranty.md",
+    "title": "Warranty",
+    "text": "Eligible devices include a 12-month limited warranty from delivery for manufacturing defects. Accidental damage, liquid damage and unauthorized repairs are excluded. Start a warranty claim from Account, Orders, Get support. A support agent may request a description and photo. Following eligibility review, repair or replacement may be offered, subject to local consumer law."
+  },
+  {
+    "source": "privacy.md",
+    "title": "Privacy & personal data",
+    "text": "For a copy of account data, open Account, Privacy, Export data. To request account deletion, open Account, Privacy, Delete account. Billing records may be retained if legally required. Support never requests your full password, PIN, complete payment card number or one-time security code. The demo system uses broad question topics, result status and latency for analytics; raw questions are not stored."
+  }
+]
