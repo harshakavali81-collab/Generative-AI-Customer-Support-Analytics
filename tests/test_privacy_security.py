@@ -41,7 +41,7 @@ def test_no_pii_in_db_and_feedback_once(app_client):
     assert saved.status_code == 200
     assert app_client.post("/api/feedback",json={"request_id":body["request_id"],"helpful":False}).status_code==404
     assert summary(service.DB)["helpful_pct"] == 100.0
-    assert "question" not in aggregate_csv(service.DB)
+    assert aggregate_csv(service.DB).splitlines()[1] == "shipping,1,0"
 
 def test_production_chat_fails_closed(app_client, monkeypatch):
     monkeypatch.setenv("ENVIRONMENT", "production")
