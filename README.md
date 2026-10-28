@@ -43,6 +43,21 @@ Important API additions: `POST /api/feedback`, `GET /api/export/topics.csv`, and
 - [Threat model and security boundaries](docs/THREAT_MODEL.md)
 - [Smoke test](scripts/smoke_test.py) and [offline-only microbenchmark](scripts/benchmark.py)
 
+## Verified portfolio QA snapshot (2026-10-28)
+
+GitHub Actions [completed successfully](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40659021869) after the compound-question extraction and browser demo improvements. The audited **fictional, authored evaluation fixture** reported:
+
+| Reproducible check | Observed result |
+|---|---:|
+| Python regression suite | **32 passed** |
+| React frontend build | **Passed** |
+| Expected-source retrieval among top 3 | **13 / 13** |
+| Cited answers with source IDs present in retrieved passages | **13 / 13** |
+| Unsupported questions correctly abstained | **3 / 3** |
+| Original SVG diagrams checked for validity | **10 / 10** |
+
+**Interpretation:** This is validation on 16 author-created fictional FAQ questions, *not* independent human-rated answer accuracy, real-world support effectiveness, p95 production latency, security certification, or a deployed production service. Machine-readable reports are uploaded as Actions artifacts. Run `python -m scripts.evaluate --strict --output evaluation/results.json` to reproduce.
+
 ## Features
 
 - Six trusted, fictional Markdown support policy documents with checksums and deterministic chunk IDs.

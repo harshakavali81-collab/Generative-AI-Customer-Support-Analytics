@@ -13,3 +13,9 @@
 **Relevant skills:** Python, FastAPI, React, SQL, NLP, embeddings, information retrieval, API design, data ethics, responsible AI and developer testing.
 
 **Repository:** https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics
+
+## Recorded verification at latest checked code revision
+
+The [GitHub Actions run](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40659021869) passed 32 Python regression tests and the React build. On a 16-question author-created fictional fixture, 13/13 answerable prompts retrieved the expected policy source in the top 3, 13/13 returned answers with citation IDs present among retrieved passages, and 3/3 unsupported prompts abstained. These are **fixture-level functional checks, not expert-rated factual entailment, independent hallucination benchmarking or actual customer satisfaction**.
+
+The standalone browser demo is copied into the portfolio repository, but a successful publicly accessible HTTP deployment is not independently verified. The FastAPI service is not publicly deployed.
