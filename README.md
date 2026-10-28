@@ -8,6 +8,22 @@
 
 > **Demo integrity:** All policies describe a *fictional retailer*. The default assistant uses offline **TF-IDF sparse vector embeddings + extractive, source-cited answers**; it is not a pretrained LLM. Optional OpenAI generation is disabled unless deliberately configured. Figures labeled illustrative are not observed performance. No production customer support or real customer data is claimed.
 
+## Browser-only demonstration
+
+An independent static browser experience is available in [`site/`](site/index.html). It uses the same *fictional policy themes* but runs its own smaller client-side TF-IDF retriever and **session-only** analytics, with no API key or backend. It is not the full FastAPI/React app, does not perform remote LLM generation, and does not represent production performance.
+
+The [GitHub Pages deployment workflow](.github/workflows/pages.yml) publishes `site/` when repository Pages is configured for GitHub Actions and the workflow completes. If Pages is enabled, the expected demonstration URL is:
+`https://harshakavali81-collab.github.io/Generative-AI-Customer-Support-Analytics/`
+
+To inspect locally using a static server:
+
+```bash
+python -m http.server 8090 -d site
+# Visit http://localhost:8090
+```
+
+Browser-only counters reset when the page reloads; the real Python application persists topic-level SQLite metrics. See [architecture](docs/ARCHITECTURE.md).
+
 ## Features
 
 - Six trusted, fictional Markdown support policy documents with checksums and deterministic chunk IDs.
