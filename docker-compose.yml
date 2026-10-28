@@ -1,0 +1,24 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-}
+      ENABLE_REMOTE_LLM: ${ENABLE_REMOTE_LLM:-false}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+    volumes:
+      - supportlens-data:/app/instance
+    restart: unless-stopped
+  web:
+    build:
+      context: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+volumes:
+  supportlens-data:
