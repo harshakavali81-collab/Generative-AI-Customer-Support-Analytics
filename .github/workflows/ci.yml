@@ -15,6 +15,7 @@ jobs:
       - run: python -m pytest -q
       - run: python -m scripts.evaluate
       - run: python -m compileall -q src backend
+      - run: node --check site/app.js
   frontend:
     runs-on: ubuntu-latest
     defaults:
