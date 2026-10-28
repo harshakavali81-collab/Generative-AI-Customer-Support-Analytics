@@ -3,10 +3,15 @@ from collections import Counter
 import math
 import re
 
-STOP = set("a an and are as at be by can do does for from has have how i if in is it my of on or our the their there these this to was we what when where which who why with you your".split())
+STOP = set("a an and are as at be by can do does for from has have how i if in is it my of on or our the their there these this to was we what when where which who why will with you your".split())
 
 def tokens(text: str) -> list[str]:
-    return [t for t in re.findall(r"[a-z0-9]+", text.lower()) if len(t) > 1 and t not in STOP]
+    words = re.findall(r"[a-z0-9]+", text.lower())
+    # Minimal plural normalization for common support terms (refund/refunds, return/returns).
+    words = [w[:-3] + "y" if len(w) > 5 and w.endswith("ies") else
+             w[:-1] if len(w) > 4 and w.endswith("s") and not w.endswith(("ss", "us", "is")) else w
+             for w in words]
+    return [w for w in words if len(w) > 1 and w not in STOP]
 
 def train(chunks: list[dict]) -> dict:
     freq = Counter()
