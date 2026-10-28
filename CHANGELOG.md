@@ -1,5 +1,13 @@
 # Changelog
 
+## Release-quality validation — 2026-10-28
+
+- Added real Chromium desktop/mobile browser E2E for the fictional offline showcase, recording actual screenshots as CI artifacts.
+- Added Docker Compose two-container integration checks and explicit web/API health checks.
+- Published authored-fictional-policy evaluation results as machine-readable build artifacts.
+- Latest [source CI run](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660436505) confirms all four jobs successful with 32 Python tests passing.
+- Public production hosting and independent real-data validation remain out of scope and must not be claimed.
+
 ## 1.1.0 — 2026-10-28
 
 - Source-linked extractive support answers over six fictional policies.

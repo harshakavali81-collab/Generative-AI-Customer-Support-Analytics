@@ -43,6 +43,22 @@ Important API additions: `POST /api/feedback`, `GET /api/export/topics.csv`, and
 - [Threat model and security boundaries](docs/THREAT_MODEL.md)
 - [Smoke test](scripts/smoke_test.py) and [offline-only microbenchmark](scripts/benchmark.py)
 
+## Latest verified release-quality checks
+
+The complete [GitHub Actions run](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660436505) for the integrated application passed all four jobs:
+
+| Area | Verified result |
+|---|---|
+| Python tests | 32 passed |
+| Authored fictional evaluation | 13/13 expected-source hits; 13/13 cited answers with retrieved source IDs; 3/3 unsupported abstentions |
+| React production build | Passed |
+| Docker Compose | Both API and web containers healthy; HTTP proxy, health and cited question passed |
+| Chromium browser-only showcase | Desktop + mobile E2E passed; navigation, citations, unanswered questions and session metrics |
+| Original SVG gallery | 10 valid project diagrams |
+| Artifacts | [Real Chromium screenshots](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660436505/artifacts/12803617158) and [machine-readable evaluation](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660436505/artifacts/12802349853) |
+
+**Important limits:** The real Chromium screenshots are of the local standalone **browser-only** demonstration. The full Python/React stack was validated inside Docker in GitHub Actions. Neither check verifies a publicly deployed FastAPI service, authorized real-user accounts or real-customer accuracy.
+
 ## Verified portfolio QA snapshot (2026-10-28)
 
 GitHub Actions [completed successfully](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40659021869) after the compound-question extraction and browser demo improvements. The audited **fictional, authored evaluation fixture** reported:
