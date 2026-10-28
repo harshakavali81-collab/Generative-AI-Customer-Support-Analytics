@@ -6,18 +6,25 @@ from urllib.request import Request, urlopen
 from src.embeddings.vectorizer import tokens
 
 ABSTAIN = "I couldn't verify that in the available support documentation. Please contact a human support agent."
+# Allow a single topical word for short natural queries only. Generic words
+# like 'business' must never be enough evidence to generate an answer.
+SUPPORT_TERMS = set("refund return tracking delivery shipping password login account invoice billing warranty repair replacement privacy delete payment charge dispatch security order".split())
 
 def extractive_answer(question: str, hits: list[dict]) -> str:
     if not hits:
         return ABSTAIN
     query = set(tokens(question))
+    # Short questions often contain one meaningful policy term and generic
+    # helper words: "How long do refunds take?" -> {"long","refund","take"}.
+    # The selected sentence must still come verbatim from the cited chunk.
+    min_overlap = 1 if len(query) <= 3 and (query & SUPPORT_TERMS) else 2
     choices = []
     for hit in hits:
         # Split on full stops and line breaks without introducing external text.
         for sentence in re.split(r"(?<=[.!?])\s+", hit["text"]):
             sentence = sentence.strip(" #*-")
             overlap = len(query.intersection(tokens(sentence)))
-            if overlap >= 2 and len(sentence) > 35:
+            if overlap >= min_overlap and len(sentence) > 35:
                 choices.append((overlap, hit["score"], sentence, hit["id"]))
     if not choices:
         return ABSTAIN
