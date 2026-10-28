@@ -69,8 +69,9 @@ def main():
     print(json.dumps({k:v for k,v in result.items() if k != "details"}, indent=2))
     if args.strict:
         if (result["retrieval_hit_at_3"] != result["answerable"] or
-                result["unsupported_abstentions"] != result["unsupported"]):
-            raise SystemExit("Authored fixture regression: source retrieval or abstention threshold not met")
+                result["unsupported_abstentions"] != result["unsupported"] or
+                result["supported_queries_with_valid_citation_ids"] != result["answerable"]):
+            raise SystemExit("Authored fixture regression: source retrieval, cited answer coverage or abstention threshold not met")
 
 if __name__ == "__main__":
     main()

@@ -17,10 +17,15 @@ def extractive_answer(question: str, hits: list[dict]) -> str:
     # Short questions often contain one meaningful policy term and generic
     # helper words: "How long do refunds take?" -> {"long","refund","take"}.
     # The selected sentence must still come verbatim from the cited chunk.
-    min_overlap = 1 if len(query) <= 3 and (query & SUPPORT_TERMS) else 2
     choices = []
     for hit in hits:
-        # Split on full stops and line breaks without introducing external text.
+        # A policy can answer a compound question across two adjacent sentences:
+        # "How do I claim a replacement?" -> claim procedure + replacement terms.
+        # Require at least two matching concepts across the *retrieved passage*
+        # before allowing single-concept excerpts. Never invent missing text.
+        passage_match = len(query.intersection(tokens(hit["text"])))
+        one_term_ok = bool(query & SUPPORT_TERMS) and passage_match >= 2 and hit["score"] >= 0.09
+        min_overlap = 1 if one_term_ok or (len(query) <= 3 and bool(query & SUPPORT_TERMS)) else 2
         for sentence in re.split(r"(?<=[.!?])\s+", hit["text"]):
             sentence = sentence.strip(" #*-")
             overlap = len(query.intersection(tokens(sentence)))

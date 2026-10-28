@@ -75,3 +75,10 @@ def test_short_common_refund_question_has_a_cited_policy_answer(index):
 def test_generic_untargeted_question_does_not_force_an_answer(index):
     question="What does business mean?"
     assert answer(question,retrieve(question,index))==ABSTAIN
+
+def test_compound_warranty_question_cites_multiple_sentences(index):
+    question = "How do I claim a replacement for a faulty device?"
+    hits = retrieve(question, index, top_k=3)
+    result = answer(question, hits)
+    assert result != ABSTAIN and "[source:" in result
+    assert "claim" in result.lower() and "replacement" in result.lower()
