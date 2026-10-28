@@ -1,7 +1,8 @@
-name: Deploy browser-only demo to GitHub Pages
+# Enable GitHub Pages in repository Settings > Pages before dispatching.
+# This intentionally does not run on every push because this repository's
+# GitHub Actions token cannot create its Pages site (403).
+name: Publish standalone browser demo
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -12,15 +13,13 @@ concurrency:
   cancel-in-progress: true
 jobs:
   deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
