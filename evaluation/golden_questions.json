@@ -1,0 +1,66 @@
+[
+  {
+    "question": "How long do refunds take after my return is approved?",
+    "expected_source": "returns.md"
+  },
+  {
+    "question": "Can I return a product after 20 days?",
+    "expected_source": "returns.md"
+  },
+  {
+    "question": "Is the original shipping charge refundable?",
+    "expected_source": "returns.md"
+  },
+  {
+    "question": "How fast does express shipping arrive?",
+    "expected_source": "shipping.md"
+  },
+  {
+    "question": "Where can I find my order tracking link?",
+    "expected_source": "shipping.md"
+  },
+  {
+    "question": "How long is a password reset link valid?",
+    "expected_source": "accounts.md"
+  },
+  {
+    "question": "How do I enable two-factor authentication?",
+    "expected_source": "accounts.md"
+  },
+  {
+    "question": "Where do I download an invoice?",
+    "expected_source": "billing.md"
+  },
+  {
+    "question": "What happens if my credit card was charged twice?",
+    "expected_source": "billing.md"
+  },
+  {
+    "question": "What is covered under the 12 month warranty?",
+    "expected_source": "warranty.md"
+  },
+  {
+    "question": "How do I claim a replacement for a faulty device?",
+    "expected_source": "warranty.md"
+  },
+  {
+    "question": "How do I request deletion of account data?",
+    "expected_source": "privacy.md"
+  },
+  {
+    "question": "Can support ask for my complete card number?",
+    "expected_source": "privacy.md"
+  },
+  {
+    "question": "What is the CEO's personal cell phone number?",
+    "expected_source": null
+  },
+  {
+    "question": "Can I fly an airplane using this store?",
+    "expected_source": null
+  },
+  {
+    "question": "What will the stock market close at tomorrow?",
+    "expected_source": null
+  }
+]
