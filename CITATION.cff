@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Please cite this source repository if you reuse the educational code."
+title: "SupportLens AI: Generative AI Customer Support & Analytics"
+type: software
+authors:
+  - family-names: Kavali
+    given-names: Harshavardhan
+repository-code: https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics
+license: MIT
+date-released: 2026-10-28
+version: 1.1.0
