@@ -64,3 +64,14 @@ def test_large_or_symlink_files_not_ingested(tmp_path):
     (tmp_path/"policy.txt").write_text("good trusted policy")
     (tmp_path/"oversize.txt").write_text("x"*256001)
     with pytest.raises(ValueError): load_documents(tmp_path)
+
+def test_short_common_refund_question_has_a_cited_policy_answer(index):
+    question="How long do refunds take?"
+    hits=retrieve(question,index)
+    result=answer(question,hits)
+    assert result!=ABSTAIN and "[source:" in result
+    assert "business days" in result.lower()
+
+def test_generic_untargeted_question_does_not_force_an_answer(index):
+    question="What does business mean?"
+    assert answer(question,retrieve(question,index))==ABSTAIN
