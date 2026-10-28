@@ -8,11 +8,11 @@
 
 ## Publish the browser-only showcase
 
-The portfolio repository contains `supportlens-demo/`. Once the portfolio's GitHub Pages deployment completes successfully, its expected URL is:
+The portfolio repository contains `supportlens-demo/`. The portfolio GitHub Pages browser demo has been verified from an independent GitHub Actions runner. Its public URL is:
 
 https://harshakavali81-collab.github.io/harshavardhan-portfolio/supportlens-demo/
 
-**Do not claim this is live until an external HTTPS check succeeds.** Source control publication alone is not hosting verification.
+**Verified 2026-10-28:** [Public HTTP verification](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660742935) checked the demo HTML, JS, CSS, six-policy JSON and public case study with HTTP 200. This verifies the static browser demo is reachable, not that the FastAPI production application is hosted.
 
 For a *separate* Pages site under this source repository, first visit
 https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/settings/pages

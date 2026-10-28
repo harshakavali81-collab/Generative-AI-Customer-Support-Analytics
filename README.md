@@ -8,6 +8,8 @@
 
 > **Demo integrity:** All policies describe a *fictional retailer*. The default assistant uses offline **TF-IDF sparse vector embeddings + extractive, source-cited answers**; it is not a pretrained LLM. Optional OpenAI generation is disabled unless deliberately configured. Figures labeled illustrative are not observed performance. No production customer support or real customer data is claimed.
 
+**LIVE DEMO:** [Launch SupportLens AI — verified browser-only experience](https://harshakavali81-collab.github.io/harshavardhan-portfolio/supportlens-demo/) · [Public portfolio case study](https://harshakavali81-collab.github.io/harshavardhan-portfolio/cases/supportlens.html) · [GitHub Actions external HTTP evidence](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660742935). The published demo runs entirely in the visitor's browser using fictional policies; the complete FastAPI service remains local/container-tested, not publicly hosted.
+
 ## Browser-only demonstration
 
 An independent static browser experience is available in [`site/`](site/index.html). It uses the same *fictional policy themes* but runs its own smaller client-side TF-IDF retriever and **session-only** analytics, with no API key or backend. It is not the full FastAPI/React app, does not perform remote LLM generation, and does not represent production performance.
@@ -32,7 +34,7 @@ Local-development mode supports testing without tokens. If `ENVIRONMENT=producti
 
 Important API additions: `POST /api/feedback`, `GET /api/export/topics.csv`, and `POST /api/admin/retention-cleanup`. See [API reference](docs/API_REFERENCE.md), [threat model](docs/THREAT_MODEL.md), [data dictionary](docs/DATA_DICTIONARY.md) and [operations guide](docs/RUNBOOK.md).
 
-**Public browser demo placement:** The same static `site/` showcase has been mirrored into the separate [portfolio repository's `supportlens-demo/` directory](https://github.com/harshakavali81-collab/harshavardhan-portfolio/tree/main/supportlens-demo). Its expected GitHub Pages path is [Portfolio browser demo](https://harshakavali81-collab.github.io/harshavardhan-portfolio/supportlens-demo/), pending independently verified publication. The separate repository's GitHub Pages activation returned a permission error; the [manual deploy workflow](.github/workflows/pages.yml) should only be dispatched after configuring repository Pages in Settings.
+**Public browser demo placement:** The same static `site/` showcase has been mirrored into the separate [portfolio repository's `supportlens-demo/` directory](https://github.com/harshakavali81-collab/harshavardhan-portfolio/tree/main/supportlens-demo). Its **publicly verified** GitHub Pages URL is [Portfolio browser demo](https://harshakavali81-collab.github.io/harshavardhan-portfolio/supportlens-demo/). A GitHub-hosted release probe confirmed HTTP 200 for its HTML, JavaScript, CSS, policy JSON and the portfolio case study on 2026-10-28 ([proof](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660742935)). The separate repository's GitHub Pages activation returned a permission error; the [manual deploy workflow](.github/workflows/pages.yml) should only be dispatched after configuring repository Pages in Settings.
 
 ### Engineering and handoff guides
 
@@ -57,7 +59,7 @@ The complete [GitHub Actions run](https://github.com/harshakavali81-collab/Gener
 | Original SVG gallery | 10 valid project diagrams |
 | Artifacts | [Real Chromium screenshots](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660436505/artifacts/12803617158) and [machine-readable evaluation](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660436505/artifacts/12802349853) |
 
-**Important limits:** The real Chromium screenshots are of the local standalone **browser-only** demonstration. The full Python/React stack was validated inside Docker in GitHub Actions. Neither check verifies a publicly deployed FastAPI service, authorized real-user accounts or real-customer accuracy.
+**Important limits:** The real Chromium screenshots are of the local standalone **browser-only** demonstration. The full Python/React stack was validated inside Docker in GitHub Actions. The public browser-only page is separately verified by an external HTTP probe. None of these checks verifies a publicly deployed FastAPI service, authorized real-user accounts or real-customer accuracy.
 
 ## Verified portfolio QA snapshot (2026-10-28)
 
