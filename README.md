@@ -169,6 +169,10 @@ For public hosting, set `ENVIRONMENT=production` and a secure `ADMIN_TOKEN`, enf
 
 Original diagrams 01–10 are authored specifically for this project. Charts are explicitly *illustrative*, not measured response times or model accuracy. See [gallery](docs/IMAGE_GALLERY.md).
 
+## Reproducible release validation
+
+Run `python -m scripts.check_assets` to validate ten SVG files, static demo references and six fictional policy fixtures. Run `python -m scripts.evaluate --strict --output evaluation/results.json` to produce a machine-readable evaluation report. CI publishes the report as an Actions artifact after each push. The fixture recall and abstention rates measure *these authored examples only*, not production accuracy, model hallucination frequency or customer satisfaction.
+
 ## Evaluation and honest limitations
 
 `python -m scripts.evaluate` runs a fixed set of fictional FAQ questions and prints *retrieval hit@3* over answerable cases and unsupported-question abstentions. It is an authored fixture, not an independent model benchmark. `pytest` covers chunking, retrieval, citation IDs, refusal, metrics privacy and API routes. This project does **not** certify hallucination-free generation, privacy compliance or security for public production.

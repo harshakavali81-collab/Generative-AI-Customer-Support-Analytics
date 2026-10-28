@@ -13,3 +13,12 @@ python -m scripts.evaluate
 **What not to claim:** no production precision/recall, hallucination rate, actual user satisfaction or p95 latency until measured on held-out real queries under representative load. Even a citation-valid LLM answer can still misstate a policy.
 
 **Next tests:** manual evidence entailment labels, holdout set, semantic vs sparse benchmark, relevance thresholds by source type, adversarial instructions embedded in documents, ambiguous language and demographic fairness review, privacy retention tests, load testing and human escalation audit.
+
+## Automated evaluation report
+
+```bash
+python -m scripts.evaluate --strict --output evaluation/results.json
+python -m scripts.check_assets
+```
+
+The strict mode requires all authored expected-source queries to have their expected source in top 3 and all authored unsupported questions to abstain. It also records cited answer coverage and checks that every returned citation ID is in the retrieved evidence set. **Citation-ID validity is not factual entailment or end-to-end answer accuracy.** The report contains only authored fictional questions. GitHub Actions uploads `evaluation/results.json` as a build artifact. The report is intentionally not committed as a static score screenshot.
