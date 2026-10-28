@@ -20,7 +20,7 @@ def check(page):
     page.on("request", lambda request: remote_requests.append(request.url)
             if urlparse(request.url).hostname not in {"127.0.0.1", "localhost"} else None)
     page.goto("http://127.0.0.1:8090/", wait_until="networkidle")
-    page.locator(".source-card").first.wait_for()
+    page.locator(".source-card").first.wait_for(state="attached")
     assert page.locator(".source-card").count() == 6, "Expected six fictional policies"
 
     page.get_by_role("button", name="How many days do refunds take?").click()
