@@ -1,0 +1,223 @@
+> Historical detailed project guide. The root README and repository inventory describe currently available files; older release notes may refer to external bundles or earlier versions.
+
+# ✦ SupportLens AI — Generative AI Customer Support & Analytics
+
+![SupportLens AI](docs/images/01-product-overview.svg)
+
+**Source-grounded customer support assistant + privacy-minimal SQL analytics + React dashboard.** Built as a reproducible portfolio project for **GenAI Engineer · AI/ML Engineer · Python Developer · Product Analyst** roles.
+
+![Python](https://img.shields.io/badge/Python-3.12-3776AB) ![FastAPI](https://img.shields.io/badge/FastAPI-API-009688) ![React](https://img.shields.io/badge/React-UI-61DAFB) ![License](https://img.shields.io/badge/License-MIT-green) ![CI](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/workflows/ci.yml/badge.svg)
+
+> **Demo integrity:** All policies describe a *fictional retailer*. The default assistant uses offline **TF-IDF sparse vector embeddings + extractive, source-cited answers**; it is not a pretrained LLM. Optional OpenAI generation is disabled unless deliberately configured. Figures labeled illustrative are not observed performance. No production customer support or real customer data is claimed.
+
+**LIVE DEMO:** [Launch SupportLens AI — verified browser-only experience](https://harshakavali81-collab.github.io/harshavardhan-portfolio/supportlens-demo/) · [Public portfolio case study](https://harshakavali81-collab.github.io/harshavardhan-portfolio/cases/supportlens.html) · [GitHub Actions external HTTP evidence](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660742935). The published demo runs entirely in the visitor's browser using fictional policies; the complete FastAPI service remains local/container-tested, not publicly hosted.
+
+## Browser-only demonstration
+
+An independent static browser experience is available in [`site/`](site/index.html). It uses the same *fictional policy themes* but runs its own smaller client-side TF-IDF retriever and **session-only** analytics, with no API key or backend. It is not the full FastAPI/React app, does not perform remote LLM generation, and does not represent production performance.
+
+The [GitHub Pages deployment workflow](.github/workflows/pages.yml) publishes `site/` when repository Pages is configured for GitHub Actions and the workflow completes. If Pages is enabled, the expected demonstration URL is:
+`https://harshakavali81-collab.github.io/Generative-AI-Customer-Support-Analytics/`
+
+To inspect locally using a static server:
+
+```bash
+python -m http.server 8090 -d site
+# Visit http://localhost:8090
+```
+
+Browser-only counters reset when the page reloads; the real Python application persists topic-level SQLite metrics. See [architecture](docs/ARCHITECTURE.md).
+
+## Security, feedback and operations (v1.1)
+
+The FastAPI application includes optional one-time **anonymous helpful / unhelpful ratings**, average response-time and answer-rate metrics, a protected **aggregate topic CSV** export, and configurable retention (30 days by default). It does **not** store raw prompts, replies or client IPs in SQLite. Rejected questions containing obvious personal-email, PIN/OTP or payment-card patterns do not enter the event table, but these simple patterns are not a complete PII scanner.
+
+Local-development mode supports testing without tokens. If `ENVIRONMENT=production` is set, chat access requires `CHAT_API_TOKEN` and admin analytics requires `ADMIN_TOKEN`; routes fail closed when secrets are missing. These are educational operator gates, **not** multi-user authentication, and should not be treated as a real public security solution. A single-process per-IP rate limiter is available for the demo; an external ingress limiter is needed at scale.
+
+Important API additions: `POST /api/feedback`, `GET /api/export/topics.csv`, and `POST /api/admin/retention-cleanup`. See [API reference](docs/API_REFERENCE.md), [threat model](docs/THREAT_MODEL.md), [data dictionary](docs/DATA_DICTIONARY.md) and [operations guide](docs/RUNBOOK.md).
+
+**Public browser demo placement:** The same static `site/` showcase has been mirrored into the separate [portfolio repository's `supportlens-demo/` directory](https://github.com/harshakavali81-collab/harshavardhan-portfolio/tree/main/supportlens-demo). Its **publicly verified** GitHub Pages URL is [Portfolio browser demo](https://harshakavali81-collab.github.io/harshavardhan-portfolio/supportlens-demo/). A GitHub-hosted release probe confirmed HTTP 200 for its HTML, JavaScript, CSS, policy JSON and the portfolio case study on 2026-10-28 ([proof](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660742935)). The separate repository's GitHub Pages activation returned a permission error; the [manual deploy workflow](.github/workflows/pages.yml) should only be dispatched after configuring repository Pages in Settings.
+
+### Engineering and handoff guides
+
+- [Deployment checklist and GitHub Pages troubleshooting](docs/DEPLOYMENT.md)
+- [Operator runbook](docs/RUNBOOK.md)
+- [Complete API reference](docs/API_REFERENCE.md)
+- [Privacy-minimal data dictionary](docs/DATA_DICTIONARY.md)
+- [Threat model and security boundaries](docs/THREAT_MODEL.md)
+- [Smoke test](scripts/smoke_test.py) and [offline-only microbenchmark](scripts/benchmark.py)
+
+## Latest verified release-quality checks
+
+The complete [GitHub Actions run](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660436505) for the integrated application passed all four jobs:
+
+| Area | Verified result |
+|---|---|
+| Python tests | 32 passed |
+| Authored fictional evaluation | 13/13 expected-source hits; 13/13 cited answers with retrieved source IDs; 3/3 unsupported abstentions |
+| React production build | Passed |
+| Docker Compose | Both API and web containers healthy; HTTP proxy, health and cited question passed |
+| Chromium browser-only showcase | Desktop + mobile E2E passed; navigation, citations, unanswered questions and session metrics |
+| Original SVG gallery | 10 valid project diagrams |
+| Artifacts | [Real Chromium screenshots](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660436505/artifacts/12803617158) and [machine-readable evaluation](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40660436505/artifacts/12802349853) |
+
+**Important limits:** The real Chromium screenshots are of the local standalone **browser-only** demonstration. The full Python/React stack was validated inside Docker in GitHub Actions. The public browser-only page is separately verified by an external HTTP probe. None of these checks verifies a publicly deployed FastAPI service, authorized real-user accounts or real-customer accuracy.
+
+## Verified portfolio QA snapshot (2026-10-28)
+
+GitHub Actions [completed successfully](https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics/actions/runs/40659021869) after the compound-question extraction and browser demo improvements. The audited **fictional, authored evaluation fixture** reported:
+
+| Reproducible check | Observed result |
+|---|---:|
+| Python regression suite | **32 passed** |
+| React frontend build | **Passed** |
+| Expected-source retrieval among top 3 | **13 / 13** |
+| Cited answers with source IDs present in retrieved passages | **13 / 13** |
+| Unsupported questions correctly abstained | **3 / 3** |
+| Original SVG diagrams checked for validity | **10 / 10** |
+
+**Interpretation:** This is validation on 16 author-created fictional FAQ questions, *not* independent human-rated answer accuracy, real-world support effectiveness, p95 production latency, security certification, or a deployed production service. Machine-readable reports are uploaded as Actions artifacts. Run `python -m scripts.evaluate --strict --output evaluation/results.json` to reproduce.
+
+## Features
+
+- Six trusted, fictional Markdown support policy documents with checksums and deterministic chunk IDs.
+- Sliding 110-word chunk windows with 25-word overlap and local TF-IDF vector indexing.
+- Cosine top-K retrieval with conservative answer extraction and inline `[source:<chunk-id>]` references.
+- Guardrails: bounded input, known instruction-injection phrase refusal, minimum evidence overlap, human escalation for unsupported questions.
+- Optional OpenAI Chat Completions (requires your own secret/API billing); falls back to extractive answers if model is unavailable or returns unrecognized citation IDs.
+- FastAPI endpoints for chat, sources, health, analytics and unanswered-topic reports.
+- SQLite telemetry collects **topic, answered status, response latency, citation count, length, timestamp**; **does not store raw questions**.
+- Responsive React chat with evidence expanders; analytics KPI cards, trend chart and topic bars.
+- Pytest regression suite, curated evaluation fixtures, Docker Compose and CI build.
+
+## Quick start — local
+
+Python 3.11+ and Node 20+:
+
+```bash
+git clone https://github.com/harshakavali81-collab/Generative-AI-Customer-Support-Analytics.git
+cd Generative-AI-Customer-Support-Analytics
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# Linux/macOS: source .venv/bin/activate
+python -m pip install -r requirements-dev.txt
+python -m uvicorn backend.app.main:app --reload
+```
+
+In another terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+**Open http://localhost:5173** for chat and analytics; API is at **http://localhost:8000/docs**. To run with Docker instead, use `docker compose up --build` and visit **http://localhost:8080**. Docker is a local reference setup and does not include production authentication, quotas or backup automation.
+
+```bash
+python -m scripts.build_index
+python -m scripts.evaluate
+python -m pytest -q
+cd frontend && npm run build
+```
+
+No key is needed for the default offline experience. Environment options are documented in [`.env.example`](.env.example); export variables into the process or use a securely managed environment file.
+
+### Optional LLM generation
+
+Set `ENABLE_REMOTE_LLM=true`, `OPENAI_API_KEY` and a supported `OPENAI_MODEL`. **Using this option transmits user questions and retrieved document excerpts to an external API, may incur charges, and must only be done with consent and a suitable privacy arrangement.** The fallback remains local if the call or citation validation fails. Citation-ID validation cannot guarantee that every generated assertion is supported; conduct human evaluation before production.
+
+## Architecture & workflow
+
+![System architecture](docs/images/02-system-architecture.svg)
+
+```mermaid
+flowchart LR
+  D[Trusted policy .md/.txt] --> I[Ingest / checksum]
+  I --> C[Overlapping chunks]
+  C --> E[TF-IDF sparse vectors]
+  E --> V[In-memory vector index]
+  Q[User question] --> G[Input guardrails]
+  G --> R[Cosine top-K retrieval]
+  V --> R
+  R --> A{Enough evidence?}
+  A -->|Yes| S[Extractive / optional LLM answer]
+  A -->|No| H[Abstain + human support]
+  S --> Z[Source-linked citations]
+  S --> T[SQLite aggregate-friendly telemetry]
+  H --> T
+  T --> P[React analytics / unanswered topics]
+```
+
+**End-to-end:** trusted documents → checksum → overlap chunking → vectorize → cosine retrieval → cited answer / abstain → minimal SQL event → analytics dashboard.
+
+## Repository structure
+
+```text
+rag-support-analytics/
+├── .github/workflows/ci.yml     # Python & React CI
+├── data/source_docs/            # Six fictional support policies
+├── src/
+│   ├── ingestion/loader.py      # Trusted docs
+│   ├── chunking/split.py        # Overlapping windows
+│   ├── embeddings/vectorizer.py # Sparse TF-IDF vectors
+│   ├── vector_store/store.py    # Local JSON index
+│   ├── retrieval/search.py      # Top-K cosine ranking
+│   ├── generation/answer.py     # Source-aware answer + optional LLM
+│   ├── guardrails/rules.py      # Boundaries & topic tagging
+│   └── analytics/metrics.py     # SQLite analytics
+├── backend/app/main.py          # FastAPI routes
+├── frontend/src/
+│   ├── pages/Chat.jsx
+│   ├── pages/Analytics.jsx
+│   └── components/Metric.jsx
+├── sql/analytics.sql
+├── evaluation/golden_questions.json
+├── scripts/{build_index,evaluate}.py
+├── tests/
+├── docs/images/                # Ten original explanatory SVGs
+├── docker-compose.yml
+└── README.md
+```
+
+## API routes
+
+| Method | Route | Purpose |
+|---|---|---|
+| GET | `/api/health` | Service mode and indexed chunk count |
+| GET | `/api/sources` | List trusted sample policy names |
+| POST | `/api/chat` | Question → answer, citation snippets, latency |
+| GET | `/api/analytics` | Count, answer rate, response-time average, topics |
+| GET | `/api/unanswered` | Unanswered question counts by topic |
+
+Example request: `curl -X POST http://localhost:8000/api/chat -H "Content-Type: application/json" -d '{"question":"How long do refunds take?"}'`
+
+For public hosting, set `ENVIRONMENT=production` and a secure `ADMIN_TOKEN`, enforce HTTPS, rate limits, strong identity and retention policy; this example token is only a demonstration control, not a complete authentication architecture.
+
+## Ten visual explanations
+
+| | | |
+|---|---|---|
+| [![Data ingestion](docs/images/03-ingestion-pipeline.svg)](docs/images/03-ingestion-pipeline.svg) | [![Chunking](docs/images/04-chunking-strategy.svg)](docs/images/04-chunking-strategy.svg) | [![Retrieval](docs/images/05-vector-retrieval.svg)](docs/images/05-vector-retrieval.svg) |
+| [![Safety](docs/images/06-grounded-answer-flow.svg)](docs/images/06-grounded-answer-flow.svg) | [![Dashboard](docs/images/07-dashboard-preview.svg)](docs/images/07-dashboard-preview.svg) | [![Response time](docs/images/08-latency-trend.svg)](docs/images/08-latency-trend.svg) |
+| [![Unanswered](docs/images/09-unanswered-report.svg)](docs/images/09-unanswered-report.svg) | [![Governance](docs/images/10-quality-and-privacy.svg)](docs/images/10-quality-and-privacy.svg) | [![System](docs/images/02-system-architecture.svg)](docs/images/02-system-architecture.svg) |
+
+Original diagrams 01–10 are authored specifically for this project. Charts are explicitly *illustrative*, not measured response times or model accuracy. See [gallery](docs/IMAGE_GALLERY.md).
+
+## Reproducible release validation
+
+Run `python -m scripts.check_assets` to validate ten SVG files, static demo references and six fictional policy fixtures. Run `python -m scripts.evaluate --strict --output evaluation/results.json` to produce a machine-readable evaluation report. CI publishes the report as an Actions artifact after each push. The fixture recall and abstention rates measure *these authored examples only*, not production accuracy, model hallucination frequency or customer satisfaction.
+
+## Evaluation and honest limitations
+
+`python -m scripts.evaluate` runs a fixed set of fictional FAQ questions and prints *retrieval hit@3* over answerable cases and unsupported-question abstentions. It is an authored fixture, not an independent model benchmark. `pytest` covers chunking, retrieval, citation IDs, refusal, metrics privacy and API routes. This project does **not** certify hallucination-free generation, privacy compliance or security for public production.
+
+**Production work still required:** real approved documentation, access controls for ingestion/chat, tenant isolation, consent and retention, load/latency benchmarking, prompt-injection red-teaming, retrieval evaluation on held-out real questions, PII handling, deployment and observability. No deployed live RAG endpoint is claimed here.
+
+## Further reading
+
+[Architecture](docs/ARCHITECTURE.md) · [Evaluation](docs/EVALUATION.md) · [Privacy and security](docs/SECURITY.md) · [Model card](docs/MODEL_CARD.md) · [Portfolio case study](docs/PORTFOLIO_CASE_STUDY.md) · [Gallery](docs/IMAGE_GALLERY.md)
+
+**Author:** Kavali Harshavardhan · [GitHub profile](https://github.com/harshakavali81-collab) · [Portfolio](https://harshakavali81-collab.github.io/harshavardhan-portfolio/)
+
+MIT license. Educational portfolio demonstration, not a customer service offering.
